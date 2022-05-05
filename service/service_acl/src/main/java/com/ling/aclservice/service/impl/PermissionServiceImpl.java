@@ -14,8 +14,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import sun.java2d.pipe.AAShapePipe;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -225,16 +227,37 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     //把上面返回的List集合进行重新封装
     private static List<Permission> buildPermission(List<Permission> permissionList){
 
+        //创建list集合，用于数据最终封装
+        List<Permission> finalNode = new ArrayList<>();
         //把所有list集合遍历，得到顶层菜单pid=0菜单，设置level是1
         for(Permission permissionNode : permissionList){
             //得到顶层菜单pid=0菜单
             if ("0".equals(permissionNode.getPid())){
                 //设置顶层菜单的level值是1
                 permissionNode.setLevel(1);
+                //根据顶层菜单，向里面继续查询子菜单，封装到finalNode中去
+                finalNode.add(selectChildren(permissionNode,permissionList));
             }
         }
-        return null;
+        return finalNode;
+    }
 
+    private static Permission selectChildren(Permission permissonNode, List<Permission> permissionList){
+        //1 向一层菜单里面放二层菜单,二层里面还要放三层，把对象初始化
+        permissonNode.setChildren(new ArrayList<Permission>());
+
+        //2 遍历所有菜单的list集合，进行判断比较id和pid的值是都相同
+        for (Permission it : permissionList){
+            //判断id和pid是否相同
+            if(permissonNode.getId().equals(it.getPid())){
+                //把父菜单的值加一
+                int level = permissonNode.getLevel()+1;
+                it.setLevel(level);
+                //把查询出来的子菜单放到父菜单中去
+                permissonNode.getChildren().add(selectChildren(it,permissionList));
+            }
+        }
+        return permissonNode;
     }
 
     //============递归删除菜单==================================
