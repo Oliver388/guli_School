@@ -18,7 +18,7 @@ public class ScheduledTask {
     @Autowired
     private DailyService dailyService;
 
-    //（0/5 * * * * ？）：每隔5秒执行一次
+//    （0/5 * * * * ？）：每隔5秒执行一次
 //    @Scheduled(cron = "0/5 * * * * ?")//指定cron表达式规则
     public void task01(){
         System.out.println("=========我执行了");
