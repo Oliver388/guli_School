@@ -7,6 +7,7 @@
         <module>service/service_edu</module>
         <module>common</module>
         <module>infrastructure</module>
+        <module>canal_clientedu</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

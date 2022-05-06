@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2022-03-31
  */
 public interface UcenterMemberMapper extends BaseMapper<UcenterMember> {
-
+    Integer selectRegisterCount(String day);
 }
