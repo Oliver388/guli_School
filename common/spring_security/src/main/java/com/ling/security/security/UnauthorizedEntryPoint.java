@@ -1,7 +1,7 @@
 package com.ling.security.security;
 
-import com.achang.commonutils.R;
-import com.achang.commonutils.ResponseUtil;
+import com.ling.commonutils.R;
+import com.ling.commonutils.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 

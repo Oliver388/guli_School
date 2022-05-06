@@ -1,6 +1,6 @@
 package com.ling.security.security;
 
-import com.achang.commonutils.MD5;
+import com.ling.commonutils.MD5;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

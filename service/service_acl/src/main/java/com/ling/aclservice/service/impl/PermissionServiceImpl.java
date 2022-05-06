@@ -265,28 +265,31 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public void removeChildByIdGuli(String id) {
         //1 创建list集合，用于封装所有删除菜单id值
         List<String> idList = new ArrayList<>();
-        //2 向idList集合设置删除菜单id
-        this.selectPermissionChildById(id,idList);
-        //把当前id封装到list里面
+        //2 向idList设置删除菜单的id
+        selectPermissionChildById(id,idList);
+        //3 把当前id传入idList
         idList.add(id);
         baseMapper.deleteBatchIds(idList);
     }
 
-    //2 根据当前菜单id，查询菜单里面子菜单id，封装到list集合
+    //根据当前传入的id查询子菜单的id，封装到idList当中去
     private void selectPermissionChildById(String id, List<String> idList) {
-        //查询菜单里面子菜单id
-        QueryWrapper<Permission>  wrapper = new QueryWrapper<>();
+        //获取id对应的子菜单
+        QueryWrapper<Permission> wrapper = new QueryWrapper<>();
         wrapper.eq("pid",id);
         wrapper.select("id");
         List<Permission> childIdList = baseMapper.selectList(wrapper);
-        //把childIdList里面菜单id值获取出来，封装idList里面，做递归查询
+
+        //把childIdList中的id获取到并且存到idList中去
         childIdList.stream().forEach(item -> {
-            //封装idList里面
+            //封装进idList里面
             idList.add(item.getId());
             //递归查询
             this.selectPermissionChildById(item.getId(),idList);
         });
+
     }
+
 
     //=========================给角色分配菜单=======================
     @Override

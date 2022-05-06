@@ -1,7 +1,8 @@
 package com.ling.security.security;
 
-import com.achang.commonutils.R;
-import com.achang.commonutils.ResponseUtil;
+import com.ling.commonutils.R;
+import com.ling.commonutils.ResponseUtil;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
