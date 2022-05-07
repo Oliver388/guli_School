@@ -12,7 +12,7 @@ import java.util.List;
 public class TestVod {
     public static void main(String[] args) throws ClientException {
         //根据视频id获取视频的播放凭证
-        DefaultAcsClient client = InitObject.initVodClient("LTAI5tLkyyNkH92n5kh8GDfp", "HfoGBjoxzy6qIBhqyf3YgL1e3vreZ4");
+        DefaultAcsClient client = InitObject.initVodClient("xxxxxxx", "xxxxxxxxx");
 
         GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
         GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
