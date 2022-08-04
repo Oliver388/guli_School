@@ -1,11 +1,12 @@
 package com.ling.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ling.eduservice.entity.EduCourse;
 import com.ling.eduservice.entity.EduCourseDescription;
-import com.ling.eduservice.entity.frontVo.CourseFrontVo;
+import com.ling.eduservice.entity.frontVo.CourseQueryVo;
+import com.ling.eduservice.entity.frontVo.CourseWebVo;
 import com.ling.eduservice.entity.vo.CourseInfoVo;
 import com.ling.eduservice.entity.vo.CoursePublishVo;
 import com.ling.eduservice.entity.vo.CourseQuery;
@@ -16,11 +17,9 @@ import com.ling.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ling.eduservice.service.EduVideoService;
 import com.ling.servicebase.exceptionhandler.GuliException;
-import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -44,8 +43,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduChapterService chapterService;
-
-
 
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
@@ -143,7 +140,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
 
         wrapper.orderByDesc("gmt_create");
-
         baseMapper.selectPage(pageParam, wrapper);
 
     }
@@ -183,7 +179,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     //前台多条件分页查询
     @Override
-    public Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseFrontVo courseFrontVo) {
+    public Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseQueryVo courseQueryVo) {
 
         String title = null;
         String subjectId = null;
@@ -193,14 +189,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         String priceSort = null;
         String teacherId = null;
 
-        if (!StringUtils.isEmpty(courseFrontVo)){
-            title = courseFrontVo.getTitle();
-            subjectId = courseFrontVo.getSubjectId();
-            subjectParentId = courseFrontVo.getSubjectParentId();
-            gmtCreateSort = courseFrontVo.getGmtCreateSort();
-            buyCountSort = courseFrontVo.getBuyCountSort();
-            priceSort = courseFrontVo.getPriceSort();
-            teacherId = courseFrontVo.getTeacherId();
+        if (!StringUtils.isEmpty(courseQueryVo)){
+            title = courseQueryVo.getTitle();
+            subjectId = courseQueryVo.getSubjectId();
+            subjectParentId = courseQueryVo.getSubjectParentId();
+            gmtCreateSort = courseQueryVo.getGmtCreateSort();
+            buyCountSort = courseQueryVo.getBuyCountSort();
+            priceSort = courseQueryVo.getPriceSort();
+            teacherId = courseQueryVo.getTeacherId();
 
         }
 
@@ -245,6 +241,42 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         return map;
 
+    }
+
+    /**
+     * 根据讲师id查询当前讲师的课程列表
+     * @param teacherId
+     * @return
+     */
+    @Override
+    public List<EduCourse> selectByTeacherId(String teacherId) {
+        LambdaQueryWrapper<EduCourse> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(EduCourse::getTeacherId,teacherId);
+        wrapper.orderByDesc(EduCourse::getGmtModified);
+        List<EduCourse> eduCourses = baseMapper.selectList(wrapper);
+        return eduCourses;
+    }
+
+    /**
+     * 获取课程信息
+     * @param id
+     * @return
+     */
+    @Override
+    public CourseWebVo selectInfoWebById(String id) {
+        this.updatePageViewCount(id);
+        return baseMapper.selectInfoWebById(id);
+    }
+
+    /**
+     * 更新课程浏览数
+     * @param id
+     */
+    @Override
+    public void updatePageViewCount(String id) {
+        EduCourse course = baseMapper.selectById(id);
+        course.setViewCount(course.getViewCount() + 1);
+        baseMapper.updateById(course);
     }
 
 

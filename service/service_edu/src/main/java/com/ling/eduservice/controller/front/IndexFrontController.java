@@ -6,6 +6,7 @@ import com.ling.eduservice.entity.EduTeacher;
 import com.ling.eduservice.service.EduCourseService;
 import com.ling.eduservice.service.EduTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

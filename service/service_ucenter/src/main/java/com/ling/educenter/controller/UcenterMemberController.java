@@ -7,6 +7,7 @@ import com.ling.educenter.entity.UcenterMember;
 import com.ling.educenter.entity.vo.LoginVo;
 import com.ling.educenter.entity.vo.RegisterVo;
 import com.ling.educenter.service.UcenterMemberService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class UcenterMemberController {
     private UcenterMemberService memberService;
 
     //登录
+    @ApiOperation(value = "会员登录")
     @PostMapping("/login")
     public R login(@RequestBody LoginVo loginVo){
         //返回token，使用jwt生成
@@ -36,6 +38,7 @@ public class UcenterMemberController {
     }
 
     //注册
+    @ApiOperation(value = "会员注册")
     @PostMapping("/register")
     public R register(@RequestBody RegisterVo registerVo){
         memberService.register(registerVo);
@@ -43,14 +46,14 @@ public class UcenterMemberController {
     }
 
     //根据token获取用户信息
-    @GetMapping("getMemberInfo")
+    @ApiOperation(value = "根据token获取登录信息")
+    @GetMapping("getLoginInfo")
     public R getMemberInfo(HttpServletRequest request){
         //调用jwt工具类里面的根据request对象，获取头信息，返回用户id
         String id = JwtUtils.getMemberIdByJwtToken(request);
         //查询数据库，根据用户id，获取用户信息
         UcenterMember member = memberService.getById(id);
-
-        return R.ok().data("userInfo",member);
+        return R.ok().data("memberInfo",member);
     }
 
     @GetMapping("countregister/{day}")

@@ -11,6 +11,8 @@ import com.ling.educenter.service.UcenterMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ling.servicebase.exceptionhandler.GuliException;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +27,14 @@ import org.springframework.util.StringUtils;
 @Service
 public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, UcenterMember> implements UcenterMemberService {
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 会员登录
+     * @param loginVo
+     * @return
+     */
     @Override
     public String login(LoginVo loginVo) {
         //获取手机号和密码
@@ -61,6 +71,10 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         return token;
     }
 
+    /**
+     * 会员注册
+     * @param registerVo
+     */
     @Override
     public void register(RegisterVo registerVo) {
         //获取前端传来的数据
@@ -77,6 +91,14 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
                 ||StringUtils.isEmpty(password)){
             throw new GuliException(20001,"传来的数据有空值，注册失败");
         }
+
+        //校验验证码
+        //从redis获取发送的验证码
+//        String mobileCode = (String) redisTemplate.opsForValue().get(mobile);
+//        if (!code.equals(mobileCode)){
+//            throw new GuliException(20001,"error");
+//        }
+
 
         //阿里云没审核通过，尴尬，就先直接定死一个验证码好了
         if (!code.equals("7777")){
@@ -115,6 +137,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     public Integer countRegisterByDay(String day) {
         return baseMapper.selectRegisterCount(day);
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.ling.servicebase;
+package com.ling.servicebase.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;

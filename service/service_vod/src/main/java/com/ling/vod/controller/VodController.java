@@ -8,12 +8,15 @@ import com.ling.vod.Utils.ConstantVodUtils;
 import com.ling.vod.Utils.InitObject;
 import com.ling.vod.service.VodService;
 import com.sun.org.apache.bcel.internal.generic.RET;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+
+@Api(description="阿里云视频点播微服务")
 @RestController
 @RequestMapping("eduvod/video")
 @CrossOrigin

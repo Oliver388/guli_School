@@ -1,17 +1,16 @@
 package com.ling.eduservice.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ling.commonutils.R;
 import com.ling.eduservice.entity.EduCourse;
-import com.ling.eduservice.entity.EduTeacher;
 import com.ling.eduservice.entity.vo.CourseInfoVo;
 import com.ling.eduservice.entity.vo.CoursePublishVo;
 import com.ling.eduservice.entity.vo.CourseQuery;
+import com.ling.eduservice.service.EduChapterService;
 import com.ling.eduservice.service.EduCourseService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +50,7 @@ public class EduCourseController {
         Page<EduCourse> pageParam = new Page<>(current, size);
 
         //调用方法实现多条件分页查询
-        courseService.pageQuery(pageParam,courseQuery);
+        courseService.pageQuery(pageParam, courseQuery);
 
         //获取查询到的数据
         List<EduCourse> records = pageParam.getRecords();
@@ -115,6 +114,7 @@ public class EduCourseController {
         courseService.removeCourse(courseId);
         return R.ok();
     }
+
 
 }
 
