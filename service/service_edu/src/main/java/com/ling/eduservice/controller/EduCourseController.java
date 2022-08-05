@@ -3,7 +3,9 @@ package com.ling.eduservice.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ling.commonutils.R;
+import com.ling.commonutils.vo.EduCourseVo;
 import com.ling.eduservice.entity.EduCourse;
+import com.ling.eduservice.entity.frontVo.CourseWebVo;
 import com.ling.eduservice.entity.vo.CourseInfoVo;
 import com.ling.eduservice.entity.vo.CoursePublishVo;
 import com.ling.eduservice.entity.vo.CourseQuery;
@@ -11,6 +13,7 @@ import com.ling.eduservice.service.EduChapterService;
 import com.ling.eduservice.service.EduCourseService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,6 +116,17 @@ public class EduCourseController {
     public R deleteCourse(@PathVariable String courseId){
         courseService.removeCourse(courseId);
         return R.ok();
+    }
+
+    //根据课程id，查询课程信息【订单】
+    @PostMapping("/getDto/{courseId}")
+    public EduCourseVo getCourseInfoDto(@PathVariable String courseId){
+        CourseInfoVo courseInfo = courseService.getCourseInfo(courseId);
+
+        EduCourseVo eduCourseVo = new EduCourseVo();
+        BeanUtils.copyProperties(courseInfo,eduCourseVo);
+
+        return eduCourseVo;
     }
 
 

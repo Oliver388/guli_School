@@ -86,7 +86,6 @@ public class CanalClient {
 
     /**
      * 数据处理
-     *
      * @param entrys
      */
     private void dataHandle(List<CanalEntry.Entry> entrys) throws

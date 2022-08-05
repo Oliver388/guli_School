@@ -3,11 +3,13 @@ package com.ling.educenter.controller;
 
 import com.ling.commonutils.JwtUtils;
 import com.ling.commonutils.R;
+import com.ling.commonutils.vo.UcenterMemberVo;
 import com.ling.educenter.entity.UcenterMember;
 import com.ling.educenter.entity.vo.LoginVo;
 import com.ling.educenter.entity.vo.RegisterVo;
 import com.ling.educenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,10 +58,23 @@ public class UcenterMemberController {
         return R.ok().data("memberInfo",member);
     }
 
+    //根据日期，获取那天注册人数
+    @ApiOperation(value = "根据日期获取注册人数")
     @GetMapping("countregister/{day}")
     public R registerCount(@PathVariable String day){
         Integer count = memberService.countRegisterByDay(day);
         return R.ok().data("countRegister",count);
+    }
+
+
+    //根据token字符串获取用户信息
+    @PostMapping("getInfoUc/{id}")
+    public UcenterMemberVo getInfo(@PathVariable String id){
+        //根据用户id获取用户信息
+        UcenterMember ucenterMember = memberService.getById(id);
+        UcenterMemberVo ucenterMemberVo = new UcenterMemberVo();
+        BeanUtils.copyProperties(ucenterMember,ucenterMemberVo);
+        return ucenterMemberVo;
     }
 
 }

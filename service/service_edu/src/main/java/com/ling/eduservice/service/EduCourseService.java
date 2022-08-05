@@ -49,16 +49,11 @@ public interface EduCourseService extends IService<EduCourse> {
     //根据讲师id查询讲师所讲课程列表
     List<EduCourse> selectByTeacherId(String teacherId);
 
-    /**
-     * 获取课程信息
-     * @param id
-     * @return
-     */
+    //获取课程信息
     CourseWebVo selectInfoWebById(String id);
 
-    /**
-     * 更新课程浏览数
-     * @param id
-     */
+    //更新课程浏览数
     void updatePageViewCount(String id);
+
+
 }

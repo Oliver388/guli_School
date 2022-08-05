@@ -1,6 +1,7 @@
 package com.ling.eduservice.client;
 
 import com.ling.commonutils.R;
+import com.ling.eduservice.client.Impl.VodFileDegradeFeignClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;

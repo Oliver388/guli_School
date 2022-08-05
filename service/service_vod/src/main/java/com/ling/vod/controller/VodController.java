@@ -1,7 +1,10 @@
 package com.ling.vod.controller;
 
 import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.ling.commonutils.R;
 import com.ling.servicebase.exceptionhandler.GuliException;
 import com.ling.vod.Utils.ConstantVodUtils;
@@ -24,6 +27,13 @@ public class VodController {
 
     @Autowired
     private VodService vodService;
+
+    //根据视频id获取视频凭证
+    @GetMapping("getPlayAuth/{id}")
+    public R getPlayAuth(@PathVariable String id) {
+        String playAuth = vodService.getPlayAuth(id);
+        return R.ok().data("playAuth",playAuth);
+    }
 
     //上传视频到阿里云
     @PostMapping("uploadAliyunVideo")
@@ -51,7 +61,6 @@ public class VodController {
             e.printStackTrace();
             throw new GuliException(20002,"删除失败");
         }
-
     }
 
     //删除多个阿里云视频的方法
